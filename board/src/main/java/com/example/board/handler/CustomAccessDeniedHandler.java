@@ -1,3 +1,6 @@
+/*
+ * 사용자 접근 제한 핸들러: 사용자 권한에 따라 페이지 접근 제한
+ */
 package com.example.board.handler;
 
 import java.io.IOException;

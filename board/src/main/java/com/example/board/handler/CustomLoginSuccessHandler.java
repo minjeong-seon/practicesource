@@ -1,3 +1,6 @@
+/*
+ * 로그인 성공 시 작동하는 핸들러: 일반 유저 -> 메인 화면, 관리자 -> 관리자 화면으로 이동
+ */
 package com.example.board.handler;
 
 import java.io.IOException;

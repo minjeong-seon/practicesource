@@ -8,6 +8,6 @@
 </head>
 <body>
 <h1>Hello, World!</h1>
-
+This page is for checking server condition.
 </body>
 </html>

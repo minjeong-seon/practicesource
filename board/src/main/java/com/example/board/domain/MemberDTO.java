@@ -1,3 +1,6 @@
+/*
+ * 사용자 정보 DTO
+ */
 package com.example.board.domain;
 
 import java.util.Date;

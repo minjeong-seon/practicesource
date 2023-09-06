@@ -1,3 +1,6 @@
+/*
+ * 사용자 권한 DTO
+ */
 package com.example.board.domain;
 
 import lombok.AllArgsConstructor;
