@@ -17,6 +17,7 @@ public class MemberDTO {
 	private String userid;
 	private String userpw;
 	private String username;
+	private String profileImage;
 	private Date regdate;
 	private Date updatedate;
 	private boolean enabled;
