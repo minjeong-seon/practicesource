@@ -11,6 +11,4 @@ tab: 로그인 | 주식갤러리 | 공지사항 | HOME
 관리자 tab: (관리자페이지) | 주식갤러리 | 공지사항 | HOME
 관리자 페이지: 신고
 
-
-</body>
-</html>
+<%@ include file="include/footer.jsp"%>
