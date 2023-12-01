@@ -1,0 +1,79 @@
+package com.practice.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.practice.domain.ResultDTO;
+import com.practice.naver.ResultNaverClient;
+import com.practice.restaurants.dto.ResultImageItem;
+import com.practice.restaurants.dto.ResultImageReq;
+import com.practice.restaurants.dto.ResultImageRes;
+import com.practice.restaurants.dto.ResultLocalItem;
+import com.practice.restaurants.dto.ResultLocalReq;
+import com.practice.restaurants.dto.ResultLocalRes;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class ResultServiceImpl implements ResultService {
+
+	@Autowired
+	private ResultNaverClient resultNaverClient;
+	
+	@Override
+	public ResultDTO result(String restaurantName) {
+		
+		// 지역 검색 요청
+		ResultLocalReq req = new ResultLocalReq();
+		req.setQuery(restaurantName);	
+		log.info("검색 정보 로그 요청"+restaurantName);
+		
+		
+		// 지역 검색 결과 받기
+		ResultLocalRes res = resultNaverClient.ResultLocal(req);
+		
+		if(res.getTotal() >0) {			
+			// 지역 검색 중에서 첫번째 가져오기
+			ResultLocalItem localItem = res.getItems().get(0);
+			
+			// 해당 가게 사진 검색하기 위해 제목 추출
+			String imageQuery = localItem.getTitle().replaceAll("<[^>]*>", "");
+			
+			// 이미지 검색 요청
+			ResultImageReq imageReq = new ResultImageReq();
+			imageReq.setQuery(imageQuery);
+			
+			// 이미지 검색 결과 받기
+			ResultImageRes imageRes = resultNaverClient.ResultImage(imageReq);
+			
+			if(imageRes.getTotal() > 0) {
+				// 이미지 정보들 중에서 첫번째 가져오기
+				 List<ResultImageItem> imageItems = imageRes.getItems();
+				
+				// 받은 정보들을 원하는 데이터만 추출해서 ResultDTO 담기
+				ResultDTO dto = new ResultDTO();
+				dto.setTitle(localItem.getTitle());
+				dto.setCategory(localItem.getCategory());
+				dto.setAddress(localItem.getAddress());
+				dto.setRoadAddress(localItem.getRoadAddress());
+				dto.setHomePageLink(localItem.getLink());
+				
+				List<String> imageLinks = new ArrayList<>();
+			    for (ResultImageItem imageItem : imageItems) {
+			        imageLinks.add(imageItem.getLink());
+			    }
+			    dto.setImageLink(imageLinks);
+				
+				return dto;
+			
+				
+			}
+		}		
+		return new ResultDTO();
+	}
+}

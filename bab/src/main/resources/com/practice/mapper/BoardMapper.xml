@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.practice.mapper.BoardMapper">
+	
+<!-- ★동적쿼리
+		: DB 데이터 조회 시 특정 부분(주로 조건절)을 동적으로 조립하여 생성하는 기술
+			ㄴ <if>태그 사용
+			ㄴ <choose><when><otherwise> 태그 사용
+			ㄴ <foreach> 태그 사용
+			ㄴ <sql> 태그 사용	
+ -->
+ 
+	<!-- 페이지 나누기 조회 
+		<![CDATA[ ... ]]> : XML 안에 포함된 특수 문자나 구조를 해석하지 않고 그대로 유지	-->
+	
+	<select id="list" resultType="com.practice.domain.BoardDTO">
+	  <![CDATA[ 
+	  
+	  SELECT post_id, post_title, userid, post_regdate, post_content, replycnt, post_auth
+	  FROM (
+	    SELECT  rownum rn, post_id, post_title, userid, post_regdate, post_content, replycnt, post_auth
+	    FROM (select * from post order by post_auth desc, post_id desc)
+	    WHERE 
+	    ]]>
+	    
+	  <!-- 아래 <sql>로 정의한 동적쿼리 조건 삽입  -->
+	  <include refid="criteria"></include>	  
+	  
+	  <![CDATA[  
+	    rownum <= (#{page}*#{amount})
+	  )
+	  WHERE rn > (#{page}-1)*#{amount}
+	  ]]>
+	</select>
+	
+	
+	<!-- 전체 게시물 개수 : totalCnt -->
+	<select id="totalCnt" resultType="java.lang.Integer">
+		select count(*) from post
+		where
+			<include refid="criteria"></include>
+		post_id > 0		
+	</select>
+	
+	
+	<!-- 댓글 수 추가  -->
+	<update id="updateReplyCnt">
+		update post set replycnt = replycnt + #{amount}
+		where post_id=#{postId}
+	</update>
+	
+
+	<!-- Criteria 분류 기준별 조회 조건 동적쿼리 설정 -->
+	
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND" prefixOverrides="OR">
+			<foreach collection="typeArr" item="type">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							post_title like '%'||#{keyword}||'%' 
+						</when>
+						<when test="type == 'C'.toString()">
+							post_content like '%'||#{keyword}||'%' 
+						</when>
+						<when test="type == 'W'.toString()">
+							userid like '%'||#{keyword}||'%' 
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	
+	
+	
+	<!-- 글 등록 -->
+	<insert id="insert">
+		<!-- 주로 pk 값을 미리 SQL 을 통해서 처리해 두고 특정한 이름으로 결과를 보관 -->
+		<selectKey keyProperty="postId" order="BEFORE" resultType="int">
+			select post_seq.nextval from dual
+		</selectKey>	
+	
+		insert into post(post_id,post_title,post_content,userid) 
+		values(#{postId},#{postTitle},#{postContent},#{userid})
+	</insert>
+
+	<!-- 특정 번호 조회  -->
+	<select id="get" resultType="com.practice.domain.BoardDTO">
+		select post_id,post_title,userid,post_content from post where post_id=#{postId}
+	</select>
+	
+	<!-- 특정 번호 조회 + 파일 정보 
+	     property : dto 변수명과 일치
+	-->
+	<resultMap type="com.practice.domain.BoardDTO" id="boardMap">
+		<id property="postId" column="postId"/>
+		<result property="postTitle" column="postTitle"/>
+		<result property="postContent" column="postContent"/>
+		<result property="userid" column="userid"/>
+		<collection property="attachList" resultMap="attachMap"/>
+	</resultMap>	
+	<resultMap type="com.practice.domain.AttachDTO" id="attachMap">
+		<result property="uuid" column="uuid"/>
+		<result property="uploadPath" column="uploadPath"/>
+		<result property="fileName" column="fileName"/>
+		<result property="fileType" column="fileType"/>
+		<result property="postId" column="postId"/>
+	</resultMap>	
+	<select id="readAttach" resultMap="boardMap">
+		select post_title,post_content,userid,sa.post_id, uuid, uploadpath,filetype,filename
+		from post sb join attach sa on sb.post_id = sa.post_id
+		where sb.post_id=#{postId}	
+	</select>
+	
+	
+	
+	
+	<!-- 글 수정 : post_id 일치 시 (post_title, post_content, updatedate) -->
+	<update id="update">
+		update post set post_title=#{postTitle}, post_content=#{postContent}
+		where post_id=#{postId} and (post_id = #{postId} or post_auth = 1)
+	</update>
+	
+	<!-- 글 삭제 -->
+	<delete id="delete">
+		delete from post where post_id=#{postId} and (post_id = #{postId} or post_auth = 1)
+	</delete>
+</mapper>
+

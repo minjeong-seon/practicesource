@@ -1,0 +1,141 @@
+p {
+	font-size: large;
+	font-style: normal;
+	letter-spacing: -0.75px;
+	white-space: nowrap;
+	margin-top: 0;
+}
+/*********************************/
+
+.search-results {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.sorting {
+  margin-bottom: 10px;
+}
+
+#results-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#results-list li {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+
+/*********************************/
+.store_name {
+	font-size: xx-large;
+	font-weight: bolder;
+}
+
+.load_more {
+	padding-top: 7em;-
+}
+
+.load_more a {
+	display: flex;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	align-items: center;
+	width: 100%;
+	padding: 18px 0px;
+	border-radius: 8px;
+	background-color: rgb(21, 98, 189);
+	font-size: 14px;
+	font-weight: 400;
+	color: rgb(255, 255, 255);
+}
+
+.more_btn_icon {
+	height: 20px;
+	width: 20px;
+}
+
+.section_wrap {
+	flex: 0 0 100%;
+	max-width: 100%;
+	padding: 1.2em;
+	border-radius: 2em;
+}
+
+.boxing:hover {
+	background-color: #f0f0f0;
+	border-radius: 2em;
+}
+
+.review_info{
+	padding-top: 1em;
+}
+
+/************맛집등록요청****************/
+.cJGyla {
+    display: flex;
+}
+
+.ijJQce {
+	margin: 0 auto;
+    width: 788px;
+    background-color: white;
+    padding: 40px 0px;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+.ijJQce h1 {
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: -0.8px;
+    color: rgb(32, 32, 32);
+}
+
+.dzoqkg {
+    padding: 0.875rem 6.3125rem;
+    border: transparent;
+    border-radius: 10px;
+    background-color: rgb(25, 183, 194);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    letter-spacing: -0.05rem;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out 0s;
+}
+
+.ijJQce span {
+    font-size: 13px;
+    letter-spacing: -0.65px;
+    color: rgb(158, 158, 158);
+}
+
+
+/**--------------------------**/
+
+.space_wrap{
+	padding-bottom: 1em;
+}
+
+#search_image{
+	    height: 225px;
+    width: 210px;
+    padding-top: 18px;
+}
+
+/**--------------------------**/
+
+.msg_wrap{
+	text-align: center;
+    font-size: 18px;
+}
