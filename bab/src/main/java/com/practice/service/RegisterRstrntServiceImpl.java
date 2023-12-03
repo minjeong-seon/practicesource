@@ -30,10 +30,8 @@ public class RegisterRstrntServiceImpl implements RegisterRstrntService {
 	}
 
 	// 맛집 등록 요청 목록
-	@Override
-	public List<RegisterRstrntDTO> listRequest() {
-		
-		return mapper.listRequest();
+	public List<RegisterRstrntDTO> listRequest(Criteria cri) {
+		return mapper.listRequest(cri);
 	}
 
 	// 맛집 등록 요청 삭제
@@ -42,6 +40,14 @@ public class RegisterRstrntServiceImpl implements RegisterRstrntService {
 		
 		return mapper.deleteRequest(reqId)==1?true:false;
 	}
+
+	// 맛집 등록 요청 건수
+	@Override
+	public int totalReqCnt(Criteria cri) {
+		return mapper.totalReqCnt(cri);
+	}
+
+
 
 
 }

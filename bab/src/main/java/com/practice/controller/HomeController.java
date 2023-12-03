@@ -1,5 +1,6 @@
 package com.practice.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.practice.domain.Criteria;
+import com.practice.domain.PageDTO;
 import com.practice.domain.RegisterRstrntDTO;
 import com.practice.main.dto.BringNaverApiDTO;
 import com.practice.service.BringNaverService;
@@ -42,11 +46,16 @@ public class HomeController {
 
 	// http://localhost:8080/api/master에서 '맛집등록요청' 목록 조회
 	@GetMapping("/api/master")
-	public String master(Model model) {
+	public String master(Model model, @ModelAttribute("cri") Criteria cri) {
 
-		List<RegisterRstrntDTO> list = reqService.listRequest();
+		List<RegisterRstrntDTO> list = reqService.listRequest(cri);
 		log.info("요청 목록 조회 ");
+
+		int total = reqService.totalReqCnt(cri);
+		
 		model.addAttribute("list", list);
+		model.addAttribute("pageDTO", new PageDTO(cri, total));
+		
 		return "master";
 	}
 

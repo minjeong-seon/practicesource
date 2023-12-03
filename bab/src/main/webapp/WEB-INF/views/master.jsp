@@ -45,6 +45,35 @@
 	</tbody>
 </table>
 
+<!-- 페이지 나누기 시작 -->
+<nav aria-label="...">
+	<ul class="pagination justify-content-center pb-3">
+		<c:if test="${pageDTO.prev}">
+			<li class="page-item"><a class="page-link"
+				href="${pageDTO.startPage-1}">Previous</a></li>
+		</c:if>
+
+		<c:forEach begin="${pageDTO.startPage}" end="${pageDTO.endPage}"
+			var="idx">
+			<!-- <li class="page-item active"></li> -->
+			<li class="page-item ${pageDTO.cri.page==idx?'active':'' }"><a
+				class="page-link" href="${idx}">${idx}</a></li>
+
+		</c:forEach>	
+
+		<c:if test="${pageDTO.next}">
+			<li class="page-item"><a class="page-link"
+				href="${pageDTO.endPage+1}">Next</a></li>
+		</c:if>
+	</ul>
+</nav>
+<!-- 페이지 나누기 종료  -->
+<!-- 페이지 나누기 링크 처리를 위한 폼 -->
+<form action="/api/master" id="operForm">
+	<%-- pageDTO.cri.page 가능  --%>
+	<input type="hidden" name="page" value="${cri.page}" /> 
+	<input type="hidden" name="amount" value="${cri.amount}" /> 
+</form>
 
 <script src="/master/list.js"></script>
 <%@ include file="include/footer.jsp"%>

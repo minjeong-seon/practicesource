@@ -1,6 +1,7 @@
 // 제목 클릭 시 a 태그 기능 중지
 // operForm 의 action 은  /board/read 변경
 // operForm 의 bno 태그를 추가해서 actionForm 전송
+
 const moves = document.querySelectorAll(".move");
 
 moves.forEach((move) => {
@@ -20,3 +21,27 @@ window.onpageshow = function (event) {
     location.reload();
   }
 };
+
+
+/*
+  하단의 페이지 번호 클릭 시 
+  a 태그 기본 기능 중지
+  a 태그 href 값 가져온후 operForm의 page요소의 value 값으로 세팅
+  actionForm 전송
+*/
+
+const pagination = document.querySelector(".pagination");
+const operForm = document.querySelector("#operForm");
+
+pagination.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  //href 값 가져오기
+  let href = e.target.getAttribute("href");
+
+  //operForm 안의 page value 수정
+  operForm.firstElementChild.value = href;
+  //console.log(operForm);
+
+  operForm.submit();
+});

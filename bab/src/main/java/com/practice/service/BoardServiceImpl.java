@@ -26,6 +26,7 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private ReplyMapper replyMapper;
 	
+	//목록조회
 	@Override
 	public List<BoardDTO> getList(Criteria cri) {		
 		return mapper.list(cri);
