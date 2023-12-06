@@ -47,6 +47,7 @@
 	
 	<!-- 특정 번호 조회 + 파일 정보 
 	     property : dto 변수명과 일치
+	     SELECT 쿼리 결과를 객체에 매핑(정확한 매핑을 돕기 위해 추가함)
 	-->
 	<resultMap type="com.practice.domain.RegisterRstrntDTO" id="registerMap">
 		<id property="reqId" column="reqId"/>
